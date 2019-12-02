@@ -17,5 +17,9 @@
     "node-sass-middleware": "0.11.0",
     "nodemon": "^2.0.1",
     "popper.js": "^1.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JasperHessellund/DB_Webshop"
   }
 }
