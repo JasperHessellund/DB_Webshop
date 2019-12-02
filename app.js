@@ -1,15 +1,17 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var sassMiddleware = require('node-sass-middleware');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let sassMiddleware = require('node-sass-middleware');
+let bodyParser = require('body-parser');
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/users');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+let app = express();
 
-var app = express();
 //Load views
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, '/views')));
+app.use(express.static(path.join(__dirname, '/views/users')));
 // Load public
 app.use(express.static(path.join(__dirname,'/public')));
 // Load bootstrap js
@@ -19,6 +21,10 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redi
 // Load bootstrap css
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
+
+// Body parser for forms
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(logger('dev'));
 app.use(express.json());
