@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webshop signup</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="card flexBox" style="width: 30rem; margin: 2% auto;">
+    <div class="card-body">
+        <form>
+            <div class="form-group">
+                <label for="inputFirstName">First Name</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+                <label for="selectGender">Gender</label>
+                <select class="form-control" id="selectGender">
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <label for="inputZipCode">Zip Code</label>
+                <input type="number" class="form-control" id="inputZipCode" placeholder="Zip Code" onfocusout="zipCodeValidation()">
+                <small id="invalidZipCode" class="form-text text-muted "></small>
+
+            </div>
+            <div class="form-group">
+                <label for="inputPhoneNumber">Phone Number</label>
+                <input type="number" class="form-control" id="inputPhoneNumber" placeholder="Phone Number" onfocusout="phoneNumberValidation()">
+                <small id="invalidPhoneNumber" class="form-text text-muted "></small>
+
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" >Email Address</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" onfocusout="emailValidation()">
+                <small id="invalidEmail" class="form-text text-muted "></small>
+
+
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                <a href="../index.html">Login</a>
+
+            </div>
+
+            <!-- TODO: need to handle the form -->
+            <button type="submit" onclick=" signUpToDatabase()" class="btn btn-primary">Login</button>
+        </form>
+
+
+    </div>
+</div>
+<script src="/javascripts/users/signup.js"></script>
+
+</body>
+</html>
