@@ -2,6 +2,8 @@ let express = require('express');
 let router = express.Router();
 let bodyParser = require('body-parser');
 let sql = require('mssql');
+//TODO: Check if email and password exists
+
 
 // Sign up a user to the database
 router.post('/signup', function(req, res, next) {
@@ -42,5 +44,27 @@ router.post('/signup', function(req, res, next) {
     sql.close()
   });
 });
-
+router.post('/login', function(req, res, next) {
+  const config = {
+    user: 'sa',
+    password: 'webshop',
+    server: 'localhost',
+    database: 'webshop',
+  };
+  let email = req.body.inputEmail;
+  let password = req.body.inputPassword;
+  sql.connect(config).then(pool => {
+    return pool.request()
+        .input("cEmail", sql.VarChar(255), email)
+        .input("cPassword", sql.VarChar(255), password)
+        .execute("sp_login")
+  }).then(result => {
+    console.log(result);
+    res.redirect('/');
+    sql.close();
+  }).catch(err => {
+    console.log(err);
+    sql.close();
+  })
+});
 module.exports = router;

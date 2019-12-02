@@ -1,26 +1,5 @@
 let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-function signUpToDatabase() {
-    let firstName = document.getElementById("inputFirstName").value;
-    let lastName = document.getElementById("inputLastName").value;
-    let gender = document.getElementById("inputLastName").value;
-    let address = document.getElementById("inputAddress").value;
-    let zipCode = document.getElementById("inputLastName").value;
-    let phoneNumber = document.getElementById("inputPhoneNumber").value;
-    let email = document.getElementById("inputEmail").value;
-    let password = document.getElementById("inputPassword").value;
-    if (gender === "Male") gender = "M";
-    else gender = "F";
-
-    let signUpQuery = "EXEC sp_createUser "+firstName +","+lastName+","+gender+","+address+","+zipCode+","+phoneNumber+
-        ","+email+","+password+",0;";
-}
-
-
-
-
-
-
 // Validators, does'nt matter for the exam
 function zipCodeValidation() {
     let inputZipCode = document.getElementById("inputZipCode").value;

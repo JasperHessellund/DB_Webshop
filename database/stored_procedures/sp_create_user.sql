@@ -1,4 +1,5 @@
 USE webshop;
+-- TODO: Check if values already exits
 CREATE PROCEDURE sp_createUser (
 @cFirstName AS VARCHAR(64),
 @cLastName AS VARCHAR(64),
@@ -11,8 +12,8 @@ CREATE PROCEDURE sp_createUser (
 @nTotalAmount AS INTEGER
 )
 AS
-    BEGIN
-        INSERT INTO users (cFirstName, cLastName, cGender, cAddress, nZipCode, nPhoneNumber, cEmail, cPassword, nTotalAmount)
+IF (SELECT COUNT(*) FROM users WHERE cEmail = @cEmail) < 1
+BEGIN
+            INSERT INTO users (cFirstName, cLastName, cGender, cAddress, nZipCode, nPhoneNumber, cEmail, cPassword, nTotalAmount)
         VALUES (@cFirstName,@cLastName,@cGender,@cAddress,@nZipCode,@nPhoneNumber,@cEmail,@cPassword,@nTotalAmount)
-
-end;
+END
