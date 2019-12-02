@@ -2,7 +2,7 @@ USE webshop;
 CREATE PROCEDURE sp_createUser (
 @cFirstName AS VARCHAR(64),
 @cLastName AS VARCHAR(64),
-@cGender AS VARCHAR(1),
+@cGender AS VARCHAR(6),
 @cAddress AS VARCHAR(255),
 @nZipCode AS INTEGER,
 @nPhoneNumber AS INTEGER,
