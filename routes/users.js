@@ -2,17 +2,18 @@ let express = require('express');
 let router = express.Router();
 let bodyParser = require('body-parser');
 let sql = require('mssql');
-//TODO: Check if email and password exists
 
-
+const config = {
+  user: 'sa',
+  password: 'webshop',
+  server: 'localhost',
+  database: 'webshop',
+};
 // Sign up a user to the database
 router.post('/signup', function(req, res, next) {
-  const config = {
-    user: 'sa',
-    password: 'webshop',
-    server: 'localhost',
-    database: 'webshop',
-  };
+
+
+
   // Taking all the fields from the form in signup.html where name=""
   let firstName = req.body.inputFirstName;
   let lastName = req.body.inputLastName;
@@ -22,49 +23,57 @@ router.post('/signup', function(req, res, next) {
   let phoneNumber = req.body.inputPhoneNumber;
   let email = req.body.inputEmail;
   let password = req.body.inputPassword;
-  sql.connect(config).then(pool => {
 
-    return pool.request()
-        .input('cFirstName',sql.VarChar(64), firstName)
-        .input('cLastName',sql.VarChar(64), lastName)
-        .input('cGender',sql.VarChar(6), gender)
-        .input('cAddress',sql.VarChar(255), address)
-        .input('nZipCode',sql.Int, zipCode)
-        .input('nPhoneNumber',sql.Int, phoneNumber)
-        .input('cEmail',sql.VarChar(255), email)
-        .input('cPassword',sql.VarChar(255), password)
-        .input('nTotalAmount',sql.Int, 0)
-        .execute('sp_createUser')
+  sql.connect(config).then(() => {
+    return sql.query`EXEC sp_createUser ${firstName}, ${lastName}, ${gender}, ${address}, 
+    ${zipCode}, ${phoneNumber}, ${email}, ${password}, 0; `;
+
   }).then(result => {
-    console.dir(result);
-    res.redirect('/')
-    sql.close()
+    console.dir(result)
+
+    if (result.rowsAffected[0]===undefined) {
+      res.redirect("/users/signup.html")
+      sql.close();
+
+    }
+    else {
+      sql.close()
+      res.redirect("/")
+    }
   }).catch(err => {
     console.log(err)
-    sql.close()
-  });
+  })
+  sql.on('error', err => {
+    console.log(err)
+  })
+
+
 });
 router.post('/login', function(req, res, next) {
-  const config = {
-    user: 'sa',
-    password: 'webshop',
-    server: 'localhost',
-    database: 'webshop',
-  };
+
   let email = req.body.inputEmail;
   let password = req.body.inputPassword;
-  sql.connect(config).then(pool => {
-    return pool.request()
-        .input("cEmail", sql.VarChar(255), email)
-        .input("cPassword", sql.VarChar(255), password)
-        .execute("sp_login")
+  sql.connect(config).then(() => {
+    return sql.query`EXEC sp_login ${email}, ${password}; `;
+
   }).then(result => {
-    console.log(result);
-    res.redirect('/');
-    sql.close();
+    console.dir(result)
+
+    if (result.rowsAffected[0]===undefined || result.rowsAffected[0] === 0) {
+      sql.close();
+      res.redirect("/users/login.html")
+
+
+    }
+    else {
+      sql.close()
+      res.redirect("/")
+    }
   }).catch(err => {
-    console.log(err);
-    sql.close();
+    console.log(err)
+  })
+  sql.on('error', err => {
+    console.log(err)
   })
 });
 module.exports = router;
