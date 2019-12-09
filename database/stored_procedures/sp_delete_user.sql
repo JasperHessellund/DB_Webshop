@@ -1,5 +1,3 @@
-USE webshop;
-
 CREATE PROCEDURE sp_deleteUser (
     @cEmail AS VARCHAR(255),
     @cPassword AS VARCHAR(255)

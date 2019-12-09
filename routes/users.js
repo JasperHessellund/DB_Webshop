@@ -4,15 +4,14 @@ let bodyParser = require('body-parser');
 let sql = require('mssql');
 
 const config = {
-  user: 'sa',
-  password: 'webshop',
-  server: 'localhost',
+  user: 'test',
+  password: 'test',
   database: 'webshop',
+  server: 'localhost',
 };
+
 // Sign up a user to the database
-router.post('/signup', function(req, res, next) {
-
-
+router.post('/signup', function(req, res) {
 
   // Taking all the fields from the form in signup.html where name=""
   let firstName = req.body.inputFirstName;
@@ -34,7 +33,6 @@ router.post('/signup', function(req, res, next) {
     if (result.rowsAffected[0]===undefined) {
       res.redirect("/users/signup.html")
       sql.close();
-
     }
     else {
       sql.close()
@@ -46,9 +44,8 @@ router.post('/signup', function(req, res, next) {
   sql.on('error', err => {
     console.log(err)
   })
-
-
 });
+
 router.post('/login', function(req, res, next) {
 
   let email = req.body.inputEmail;

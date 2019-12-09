@@ -1,5 +1,3 @@
-USE webshop;
--- TODO: Check if values already exits
 CREATE PROCEDURE sp_createUser (
 @cFirstName AS VARCHAR(64),
 @cLastName AS VARCHAR(64),
