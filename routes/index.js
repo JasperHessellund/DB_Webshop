@@ -16,7 +16,6 @@ router.get('/', function(req, res) {
 });
 
 router.get('/shop', function(req, res) {
-  console.log('bliver ramt!');
   res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
 });
 

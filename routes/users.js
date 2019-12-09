@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 let bodyParser = require('body-parser');
 let sql = require('mssql');
+var path = require("path");
 
 const config = {
   user: 'test',
@@ -16,7 +17,6 @@ router.post('/signup', function(req, res) {
   // Taking all the fields from the form in signup.html where name=""
   let firstName = req.body.inputFirstName;
   let lastName = req.body.inputLastName;
-  let gender = req.body.selectGender;
   let address = req.body.inputAddress;
   let zipCode = req.body.inputZipCode;
   let phoneNumber = req.body.inputPhoneNumber;
@@ -24,7 +24,7 @@ router.post('/signup', function(req, res) {
   let password = req.body.inputPassword;
 
   sql.connect(config).then(() => {
-    return sql.query`EXEC sp_createUser ${firstName}, ${lastName}, ${gender}, ${address}, 
+    return sql.query`EXEC sp_create_user ${firstName}, ${lastName}, ${address}, 
     ${zipCode}, ${phoneNumber}, ${email}, ${password}, 0; `;
 
   }).then(result => {
@@ -58,13 +58,12 @@ router.post('/login', function(req, res, next) {
 
     if (result.rowsAffected[0]===undefined || result.rowsAffected[0] === 0) {
       sql.close();
-      res.redirect("/users/login.html")
-
-
+      res.sendFile(path.join(__dirname, '../views/users', 'login.html'));
     }
     else {
       sql.close()
-      res.redirect("/")
+      // res.redirect("/shop");
+      res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
     }
   }).catch(err => {
     console.log(err)
