@@ -1,0 +1,27 @@
+CREATE TABLE audit_users (
+    nAuditUser BIGINT IDENTITY(1,1) PRIMARY KEY,
+    cOldFirstName AS VARCHAR(64),
+    cOldLastName AS VARCHAR(64),
+    cOldAddress AS VARCHAR(255),
+    cOldZipCode AS CHAR(4),
+    cOldPhoneNumber AS VARCHAR(16),
+    cOldEmail AS VARCHAR(255),
+    cOldPassword AS VARCHAR(255),
+    nOldTotalAmount AS INTEGER,
+    cNewFirstName AS VARCHAR(64),
+    cNewLastName AS VARCHAR(64),
+    cNewAddress AS VARCHAR(255),
+    cNewZipCode AS CHAR(4),
+    cNewPhoneNumber AS VARCHAR(16),
+    cNewEmail AS VARCHAR(255),
+    cNewPassword AS VARCHAR(255),
+    nNewTotalAmount AS INTEGER,
+    cAction CHAR(1) NOT NULL,
+    dTime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nUserID VARBINARY(85) NOT NULL DEFAULT SUSER_ID(),
+    cUserName NVARCHAR(128) NOT NULL DEFAULT SUSER_NAME(),
+    nHostID CHAR(10) NOT NULL DEFAULT HOST_ID(),
+    cHostName NVARCHAR(128) NOT NULL DEFAULT HOST_NAME(),
+    CONSTRAINT chkAction CHECK(cAction IN ('I','U','D')
+
+);
