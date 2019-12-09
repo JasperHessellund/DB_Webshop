@@ -1,4 +1,4 @@
-CREATE OR ALTER TRIGGER trg_user_audit_update_after ON dbo.tCard
+CREATE OR ALTER TRIGGER trg_card_audit_update_after ON dbo.tCard
     AFTER DELETE
 AS
 BEGIN
@@ -13,11 +13,11 @@ BEGIN
     DECLARE @cNewCCV AS CHAR(3)
     DECLARE @nNewTotalAmount AS INTEGER
 
-    SELECT @cOldCardNumber = cCardNumber, @cOldCardHolder = cCardHolder, @dOldExpireDate = cExpireDate,
+    SELECT @cOldCardNumber = cCardNumber, @cOldCardHolder = cCardHolder, @dOldExpireDate = dExpireDate,
             @cOldCCV = cCCV, @nOldTotalAmount = nTotalAmount
     FROM deleted
 
-    SELECT @cNewCardNumber = cCardNumber, @cNewCardHolder = cCardHolder, @dNewExpireDate = cExpireDate,
+    SELECT @cNewCardNumber = cCardNumber, @cNewCardHolder = cCardHolder, @dNewExpireDate = dExpireDate,
             @cNewCCV = cCCV, @nNewTotalAmount = nTotalAmount
     FROM inserted
 
