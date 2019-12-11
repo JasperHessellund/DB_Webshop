@@ -1,11 +1,11 @@
 --TODO: Finnish dont delete trigger
 
 CREATE TRIGGER dbo.trg_dont_delete_user
-ON dbo.tUsers
+ON dbo.TUsers
 INSTEAD OF DELETE
 AS
 SET NOCOUNT ON
-IF(SELECT COUNT(*) FROM tUsers WHERE nTotalAmount >0) > 0
+IF(SELECT COUNT(*) FROM TUsers WHERE nTotalAmount >0) > 0
 
 DECLARE @ERROR_MESSAGE VARCHAR(500)
 SELECT @ERROR_MESSAGE		=

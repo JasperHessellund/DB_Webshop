@@ -5,6 +5,6 @@ CREATE PROCEDURE sp_delete_user (
 AS
     BEGIN
         DELETE
-        from tUsers
+        from TUsers
         WHERE cEmail = @cEmail AND cPassword = @cPassword;
 end;

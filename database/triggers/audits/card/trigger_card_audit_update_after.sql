@@ -1,4 +1,4 @@
-CREATE OR ALTER TRIGGER trg_card_audit_update_after ON dbo.tCard
+CREATE OR ALTER TRIGGER trg_card_audit_update_after ON dbo.TCard
     AFTER DELETE
 AS
 BEGIN

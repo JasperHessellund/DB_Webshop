@@ -6,9 +6,9 @@ CREATE PROCEDURE sp_create_product (
 @nAverageRating AS REAL NOT NULL
 )
 AS
-IF (SELECT COUNT(*) FROM tProduct WHERE cName = @cName) < 1
+IF (SELECT COUNT(*) FROM TProduct WHERE cName = @cName) < 1
 BEGIN
-        INSERT INTO tProduct (cName, cDescription, nPrice, nCurrentStock, nAverageRating)
+        INSERT INTO TProduct (cName, cDescription, nPrice, nCurrentStock, nAverageRating)
         VALUES (@cName,@cDescription,@nPrice,@nCurrentStock,@nAverageRating)
 END
 

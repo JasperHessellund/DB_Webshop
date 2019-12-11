@@ -1,40 +1,40 @@
 -- Make sure to use the correct database
-USE Library
+USE webshop
 
--- Creates the login Koenjolleh with password 'Password123'.  
-CREATE LOGIN Koenjolleh	  
+-- Creates the login webshopAdmin with password 'Password123'.
+CREATE LOGIN webshopAdmin
     WITH PASSWORD = 'Password123';  
 
 -- Creates a database user for the login created above.  
-CREATE USER Koenjolleh FOR LOGIN Koenjolleh;  
+CREATE USER webshopAdmin FOR LOGIN webshopAdmin;
 
--- Grant user Koenjolleh the role of db_owner
-ALTER ROLE db_owner ADD MEMBER Koenjolleh;
-ALTER LOGIN Koenjolleh WITH DEFAULT_DATABASE = Library
+-- Grant user webshopAdmin the role of db_owner
+ALTER ROLE db_owner ADD MEMBER webshopAdmin;
+ALTER LOGIN webshopAdmin WITH DEFAULT_DATABASE = webshop
 
--- Creates the login Woodoo with password 'Qwerty123'.
-CREATE LOGIN Woodoo
+-- Creates the login webshopReader with password 'Qwerty123'.
+CREATE LOGIN webshopReader
 	WITH PASSWORD = 'Qwerty123'
 
 -- Creates a database user for the login created above.
-CREATE USER Woodoo FOR LOGIN Woodoo;
+CREATE USER webshopReader FOR LOGIN webshopReader;
 
--- Grant user Woodoo the role of db_datareader
-ALTER ROLE db_datareader ADD MEMBER Woodoo;
-ALTER LOGIN Woodoo WITH DEFAULT_DATABASE = Library
+-- Grant user webshopReader the role of db_datareader
+ALTER ROLE db_datareader ADD MEMBER webshopReader;
+ALTER LOGIN webshopReader WITH DEFAULT_DATABASE = webshop
 
--- Creates the login Jayquellen with password 'Wasd123'.
-CREATE LOGIN Jayquellen
+-- Creates the login webshopRestricted with password 'Wasd123'.
+CREATE LOGIN webshopRestricted
 	WITH PASSWORD = 'Wasd123'
 
 -- Creates a database user for the login created above.
-CREATE USER Jayquellen FOR LOGIN Jayquellen;
+CREATE USER webshopRestricted FOR LOGIN webshopRestricted;
 
--- Grant user Jayquellen the role of db_datareader
-ALTER ROLE db_datareader ADD MEMBER Jayquellen;
-ALTER LOGIN Koenjolleh WITH DEFAULT_DATABASE = Library
-DENY SELECT ON Library::TCountry TO Jayquellen;
-DENY SELECT ON Library::TAuthor TO Jayquellen;
+-- Grant user webshopRestricted the role of db_datareader
+ALTER ROLE db_datareader ADD MEMBER webshopRestricted;
+ALTER LOGIN webshopRestricted WITH DEFAULT_DATABASE = webshop
+DENY SELECT ON webshop::TInvoice TO webshopRestricted;
+DENY SELECT ON webshop::TInvoiceLine TO webshopRestricted;
 
  --Remember to write down design descisions
  --We decided to use the SQL server standart fixed database level roles because
