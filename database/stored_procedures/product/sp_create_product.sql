@@ -1,9 +1,10 @@
+-- evt sig not null på her
 CREATE PROCEDURE sp_create_product (
 @cName AS VARCHAR(80),
-@cDescription AS TEXT(1500),
-@nPrice AS INTEGER NOT NULL,
-@nCurrentStock AS INTEGER NOT NULL,
-@nAverageRating AS REAL NOT NULL
+@cDescription AS TEXT,
+@nPrice AS INTEGER,
+@nCurrentStock AS INTEGER,
+@nAverageRating AS REAL
 )
 AS
 IF (SELECT COUNT(*) FROM tProduct WHERE cName = @cName) < 1

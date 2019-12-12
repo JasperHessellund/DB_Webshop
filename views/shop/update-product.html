@@ -35,7 +35,7 @@
 
     <div class="card flexBox" style="width: 30rem; margin: 2% auto;">
         <div class="card-body">
-            <form action="/createProduct" method="post">
+            <form action="/updateProduct" method="post">
                 <div class="form-group">
                     <label for="productName">Product Name</label>
                     <input type="text" class="form-control" name="productName" id="productName"
@@ -50,21 +50,10 @@
                     <label for="price">Price</label>
                     <input type="number" class="form-control" name="price" id="price" placeholder="Price">
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
-
-    <script>
-        function createProduct() {
-            console.log('test');
-            $.post("createProduct", function (data) {
-                // $(".result").html(data);
-                console.log('DATA: ', data);
-            });
-        }
-    </script>
-
 </body>
 
 </html>

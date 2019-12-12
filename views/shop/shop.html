@@ -44,9 +44,7 @@
         <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
           etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
         <p>
-          <a href="#" class="btn btn-primary my-2">Create product</a>
-          <a href="#" class="btn btn-primary my-2">Update product</a>
-          <a href="#" class="btn btn-secondary my-2">Delete product</a>
+          <a href="../shop/create-product.html" class="btn btn-primary my-2">Create product</a>
         </p>
       </div>
     </section>
@@ -86,6 +84,8 @@
               '<div class="d-flex justify-content-between align-items-center">' +
               '<div class="btn-group">' +
               '<button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>' +
+              '<button type="button" onclick="updateProduct(' + product.nProductID + ')" class="btn btn-sm btn-outline-secondary">Update</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>' +
               '</div>' +
               '</div>' +
               '</div>' +
@@ -93,6 +93,24 @@
               '</div>');
         });
       })
+    }
+
+    function updateProduct(productID) {
+      console.log('ID:', productID)
+      $.ajax({
+        url: '/setProduct',
+        type: 'POST',
+        data: {
+          json: JSON.stringify({
+            name: "Bob",
+            description: "descp",
+            price: "700"
+          })
+        },
+        dataType: 'json'
+      });
+
+      // window.location = 'http://localhost:3000/update-product';
     }
   </script>
 </body>

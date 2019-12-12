@@ -58,10 +58,12 @@ router.post('/login', function(req, res, next) {
 
     if (result.rowsAffected[0]===undefined || result.rowsAffected[0] === 0) {
       sql.close();
-      res.sendFile(path.join(__dirname, '../views/users', 'login.html'));
+      console.log('test: 1');
+      // res.sendFile(path.join(__dirname, '../views/users', 'login.html'));
     }
     else {
       sql.close()
+      console.log('test: 2');
       // res.redirect("/shop");
       res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
     }
