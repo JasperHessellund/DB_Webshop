@@ -9,8 +9,8 @@ CREATE OR ALTER PROCEDURE sp_create_user (
 @nTotalAmount AS INTEGER
 )
 AS
-IF (SELECT COUNT(*) FROM tUsers WHERE cEmail = @cEmail) < 1
+IF (SELECT COUNT(*) FROM TUsers WHERE cEmail = @cEmail) < 1
 BEGIN
-            INSERT INTO tUsers (cFirstName, cLastName, cAddress, cZipCode, cPhoneNumber, cEmail, cPassword, nTotalAmount)
+            INSERT INTO TUsers (cFirstName, cLastName, cAddress, cZipCode, cPhoneNumber, cEmail, cPassword, nTotalAmount)
         VALUES (@cFirstName,@cLastName,@cAddress,@cZipCode,@cPhoneNumber,@cEmail,@cPassword,@nTotalAmount)
 END

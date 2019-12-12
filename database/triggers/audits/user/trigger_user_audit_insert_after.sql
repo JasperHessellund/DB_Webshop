@@ -1,4 +1,4 @@
-CREATE OR ALTER TRIGGER trg_user_audit_insert_after ON dbo.tUsers
+CREATE OR ALTER TRIGGER trg_user_audit_insert_after ON dbo.TUsers
     AFTER INSERT
 AS
 BEGIN
