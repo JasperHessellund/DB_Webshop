@@ -7,7 +7,6 @@ CREATE LOGIN webshopAdmin
 
 -- Creates a database user for the login created above.  
 CREATE USER webshopAdmin FOR LOGIN webshopAdmin;
-
 -- Grant user webshopAdmin the role of db_owner
 ALTER ROLE db_owner ADD MEMBER webshopAdmin;
 ALTER LOGIN webshopAdmin WITH DEFAULT_DATABASE = webshop

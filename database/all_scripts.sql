@@ -1,4 +1,327 @@
+-------------------------------------------------------
+--            DDL: CREATE DATABASE AND TABLES        --
+-------------------------------------------------------
+CREATE DATABASE webshop
 
+CREATE TABLE TProduct (
+	nProductID INT PRIMARY KEY IDENTITY,
+	cName VARCHAR(200) NOT NULL,
+	cDescription TEXT NOT NULL,
+	nPrice INT NOT NULL,
+	nCurrentStock INT NOT NULL,
+    nAverageRating FLOAT(4) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE TCity (
+	nCityID INT PRIMARY KEY,
+    cCity VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE TUsers (
+	nUserID INT PRIMARY KEY IDENTITY,
+	cFirstName VARCHAR(64) NOT NULL,
+	cLastName VARCHAR(64) NOT NULL,
+	cAddress VARCHAR(255) NOT NULL,
+	cZipCode CHAR(4) NOT NULL,
+	cPhoneNumber VARCHAR(16) NOT NULL UNIQUE,
+	cEmail VARCHAR(255) NOT NULL UNIQUE,
+	cPassword VARCHAR(255) NOT NULL,
+    nTotalAmount INT NOT NULL,
+	nCityID INT FOREIGN KEY REFERENCES TCity(nCityID)
+);
+
+CREATE TABLE TCard (
+	nCardID INT PRIMARY KEY IDENTITY,
+    cCardNumber VARCHAR(22) NOT NULL UNIQUE,
+	cCardHolder VARCHAR(255) NOT NULL,
+	dExpireDate DATE NOT NULL,
+	cCCV CHAR(3),
+    nTotalAmount INT NOT NULL,
+	nUserID INT FOREIGN KEY REFERENCES TUsers(nUserID)
+);
+
+CREATE TABLE TInvoice (
+	nInvoiceID INT PRIMARY KEY IDENTITY,
+	dIssueDate DATETIME NOT NULL,
+	nTax INT NOT NULL,
+	nTotalAmount INT NOT NULL,
+	nCardID INT FOREIGN KEY REFERENCES TCard(nCardID)
+
+);
+
+CREATE TABLE TInvoiceLine (
+	nProduct_invoiceID INT PRIMARY KEY IDENTITY,
+	nProductID INT FOREIGN KEY REFERENCES TProduct(nProductID),
+	nInvoiceID INT FOREIGN KEY REFERENCES TInvoice(nInvoiceID),
+	nQuantity INT NOT NULL,
+	nPrice INT NOT NULL
+);
+
+CREATE TABLE TRating (
+    nRatingID INT PRIMARY KEY IDENTITY,
+	nUserID INT FOREIGN KEY REFERENCES TUsers(nUserID),
+	nProductID INT FOREIGN KEY REFERENCES TProduct(nProductID),
+	nRating float(4) CHECK (nRating BETWEEN 0 AND 5),
+    cComment TEXT
+);
+-------------------------------------------------------
+--                TEMPORAL TABLE                     --
+-------------------------------------------------------
+ALTER TABLE TProduct
+ADD dStart DATETIME2 GENERATED ALWAYS AS ROW START HIDDEN DEFAULT GETUTCDATE(),
+	dEnd DATETIME2 GENERATED ALWAYS AS ROW END DEFAULT CONVERT(DATETIME2, '9999-12-31 23:59:59.9999999'),
+PERIOD FOR SYSTEM_TIME (dStart, dEnd);
+
+ALTER TABLE TProduct SET (SYSTEM_VERSIONING = ON);
+
+ALTER TABLE TRating
+ADD dStart DATETIME2 GENERATED ALWAYS AS ROW START HIDDEN DEFAULT GETUTCDATE(),
+	dEnd DATETIME2 GENERATED ALWAYS AS ROW END DEFAULT CONVERT(DATETIME2, '9999-12-31 23:59:59.9999999'),
+PERIOD FOR SYSTEM_TIME (dStart, dEnd);
+
+ALTER TABLE TRating SET (SYSTEM_VERSIONING = ON);
+
+
+-------------------------------------------------------
+--                TRIGGERS/AUDITS                    --
+-------------------------------------------------------
+--Audit card
+
+CREATE TABLE audit_card (
+    nAuditCard BIGINT IDENTITY(1,1) PRIMARY KEY,
+    cOldCardNumber VARCHAR(22),
+    cOldCardHolder VARCHAR(255),
+    dOldExpireDate DATE,
+    cOldCCV CHAR(3),
+    cOldTotalAmount INT,
+    cNewCardNumber VARCHAR(22),
+    cNewCardHolder VARCHAR(255),
+    dNewExpireDate DATE,
+    cNewCCV CHAR(3),
+    cNewTotalAmount INT,
+    cAction CHAR(1) NOT NULL,
+    dTime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nUserID VARBINARY(85) NOT NULL DEFAULT SUSER_ID(),
+    cUserName NVARCHAR(128) NOT NULL DEFAULT SUSER_NAME(),
+    nHostID CHAR(10) NOT NULL DEFAULT HOST_ID(),
+    cHostName NVARCHAR(128) NOT NULL DEFAULT HOST_NAME(),
+    CONSTRAINT chkCardAction CHECK(cAction IN ('I','U','D'))
+
+);
+GO
+CREATE OR ALTER TRIGGER trg_card_audit_delete_after ON dbo.TCard
+    AFTER DELETE
+AS
+BEGIN
+    DECLARE @cCardNumber AS VARCHAR(22)
+    DECLARE @cCardHolder AS VARCHAR(255)
+    DECLARE @dExpireDate AS DATE
+    DECLARE @cCCV AS CHAR(3)
+    DECLARE @nTotalAmount AS INTEGER
+
+    SELECT @cCardNumber = cCardNumber, @cCardHolder = cCardHolder, @dExpireDate = dExpireDate,
+            @cCCV = cCCV, @nTotalAmount = nTotalAmount
+    FROM deleted
+
+    INSERT INTO dbo.audit_card (cOldCardNumber, cOldCardHolder, dOldExpireDate, cOldCCV,
+                cOldTotalAmount, cAction)
+                --'D' stands for DELETE
+           VALUES (@cCardNumber, @cCardHolder, @dExpireDate, @cCCV, @nTotalAmount, 'D')
+END
+GO
+CREATE OR ALTER TRIGGER trg_card_audit_insert_after ON dbo.TCard
+    AFTER INSERT
+AS
+BEGIN
+    DECLARE @cCardNumber AS VARCHAR(22)
+    DECLARE @cCardHolder AS VARCHAR(255)
+    DECLARE @dExpireDate AS DATE
+    DECLARE @cCCV AS CHAR(3)
+    DECLARE @nTotalAmount AS INTEGER
+
+    SELECT @cCardNumber = cCardNumber, @cCardHolder = cCardHolder, @dExpireDate = dExpireDate,
+            @cCCV = cCCV, @nTotalAmount = nTotalAmount
+    FROM inserted
+
+    INSERT INTO dbo.audit_card (cNewCardNumber, cNewCardHolder, dNewExpireDate, cNewCCV,
+                cNewTotalAmount, cAction)
+                --'I' stands for INSERT
+           VALUES (@cCardNumber, @cCardHolder, @dExpireDate, @cCCV, @nTotalAmount, 'I')
+END
+GO
+CREATE OR ALTER TRIGGER trg_card_audit_update_after ON dbo.TCard
+    AFTER DELETE
+AS
+BEGIN
+    DECLARE @cOldCardNumber AS VARCHAR(22)
+    DECLARE @cOldCardHolder AS VARCHAR(255)
+    DECLARE @dOldExpireDate AS DATE
+    DECLARE @cOldCCV AS CHAR(3)
+    DECLARE @nOldTotalAmount AS INTEGER
+    DECLARE @cNewCardNumber AS VARCHAR(22)
+    DECLARE @cNewCardHolder AS VARCHAR(255)
+    DECLARE @dNewExpireDate AS DATE
+    DECLARE @cNewCCV AS CHAR(3)
+    DECLARE @nNewTotalAmount AS INTEGER
+
+    SELECT @cOldCardNumber = cCardNumber, @cOldCardHolder = cCardHolder, @dOldExpireDate = dExpireDate,
+            @cOldCCV = cCCV, @nOldTotalAmount = nTotalAmount
+    FROM deleted
+
+    SELECT @cNewCardNumber = cCardNumber, @cNewCardHolder = cCardHolder, @dNewExpireDate = dExpireDate,
+            @cNewCCV = cCCV, @nNewTotalAmount = nTotalAmount
+    FROM inserted
+
+    INSERT INTO dbo.audit_card (cOldCardNumber, cOldCardHolder, dOldExpireDate, cOldCCV,
+                cOldTotalAmount, cNewCardNumber, cNewCardHolder, dNewExpireDate, cNewCCV,
+                cNewTotalAmount, cAction)
+                --'U' stands for UPDATE
+           VALUES (@cOldCardNumber, @cOldCardHolder, @dOldExpireDate, @cOldCCV,
+                   @nOldTotalAmount,@cNewCardNumber, @cNewCardHolder, @dNewExpireDate, @cNewCCV, @nNewTotalAmount, 'D')
+END
+GO
+-------------------------------------------------------
+--                STORED PROCEDURES                  --
+-------------------------------------------------------
+--Create product
+CREATE PROCEDURE sp_create_product (
+@cName AS VARCHAR(80),
+@cDescription AS TEXT,
+@nPrice AS INTEGER,
+@nCurrentStock AS INTEGER,
+@nAverageRating AS REAL
+)
+AS
+IF (SELECT COUNT(*) FROM TProduct WHERE cName = @cName) < 1
+BEGIN
+        INSERT INTO TProduct (cName, cDescription, nPrice, nCurrentStock, nAverageRating)
+        VALUES (@cName,@cDescription,@nPrice,@nCurrentStock,@nAverageRating)
+END
+
+GO
+--Get all products
+CREATE PROCEDURE sp_get_all_products
+AS
+    BEGIN
+    select * from TProduct;
+end;
+
+GO
+-- Get product
+CREATE PROCEDURE sp_get_product (
+@nProductID AS INTEGER
+)
+AS
+    BEGIN
+    select * from tProduct;
+    WHERE nProductID = 1
+end;
+
+GO
+
+--Update product
+CREATE PROCEDURE sp_update_product (
+@cName AS VARCHAR(80),
+@cDescription AS TEXT,
+@nPrice AS INTEGER,
+@nCurrentStock AS INTEGER,
+@nAverageRating AS REAL
+)
+AS
+BEGIN
+        UPDATE tProduct (cName, cDescription, nPrice)
+        SET cName = @cName, cDescription = @cDescription, nPrice = @nPrice
+        WHERE nProductID = 1
+END
+
+GO
+--Create user
+CREATE OR ALTER PROCEDURE sp_create_user (
+@cFirstName AS VARCHAR(64),
+@cLastName AS VARCHAR(64),
+@cAddress AS VARCHAR(255),
+@cZipCode AS CHAR(4),
+@cPhoneNumber AS VARCHAR(16),
+@cEmail AS VARCHAR (255),
+@cPassword AS VARCHAR(255),
+@nTotalAmount AS INTEGER
+)
+AS
+IF (SELECT COUNT(*) FROM TUsers WHERE cEmail = @cEmail) < 1
+BEGIN
+            INSERT INTO TUsers (cFirstName, cLastName, cAddress, cZipCode, cPhoneNumber, cEmail, cPassword, nTotalAmount)
+        VALUES (@cFirstName,@cLastName,@cAddress,@cZipCode,@cPhoneNumber,@cEmail,@cPassword,@nTotalAmount)
+END
+
+GO
+--Delete user
+CREATE PROCEDURE sp_delete_user (
+    @cEmail AS VARCHAR(255),
+    @cPassword AS VARCHAR(255)
+)
+AS
+    BEGIN
+        DELETE
+        from TUsers
+        WHERE cEmail = @cEmail AND cPassword = @cPassword;
+end;
+
+GO
+
+--Login user
+CREATE PROCEDURE sp_login (
+@cEmail AS VARCHAR(255),
+@cPassword AS VARCHAR(255)
+)
+AS
+     BEGIN
+        SELECT cEmail, cPassword
+        FROM TUsers
+        WHERE cEmail = @cEmail AND cPassword = @cPassword;
+     END;
+GO
+-------------------------------------------------------
+--                TRANSACTIONS                       --
+-------------------------------------------------------
+
+--Buy product TODO: Insert buy product here
+
+--Rate product TODO: Insert buy product here
+
+
+-------------------------------------------------------
+--                  Security                         --
+-------------------------------------------------------
+
+USE webshop
+
+CREATE LOGIN webshopAdmin
+    WITH PASSWORD = 'Password123';
+
+CREATE USER webshopAdmin FOR LOGIN webshopAdmin;
+ALTER ROLE db_owner ADD MEMBER webshopAdmin;
+ALTER LOGIN webshopAdmin WITH DEFAULT_DATABASE = webshop
+
+CREATE LOGIN webshopReader
+	WITH PASSWORD = 'Qwerty123'
+
+CREATE USER webshopReader FOR LOGIN webshopReader;
+
+ALTER ROLE db_datareader ADD MEMBER webshopReader;
+ALTER LOGIN webshopReader WITH DEFAULT_DATABASE = webshop
+
+CREATE LOGIN webshopRestricted
+	WITH PASSWORD = 'Wasd123'
+
+CREATE USER webshopRestricted FOR LOGIN webshopRestricted;
+
+ALTER ROLE db_datareader ADD MEMBER webshopRestricted;
+ALTER LOGIN webshopRestricted WITH DEFAULT_DATABASE = webshop
+DENY SELECT ON webshop::TInvoice TO webshopRestricted;
+DENY SELECT ON webshop::TInvoiceLine TO webshopRestricted;
+-------------------------------------------------------
+--                  TEST DATA                        --
+-------------------------------------------------------
 -- 20 products
 INSERT INTO TProduct(cName, cDescription, nPrice, nCurrentStock, nAverageRating)
 VALUES ('Screwdriver','Can screw screws', '30', '20','0')
