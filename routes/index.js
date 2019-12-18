@@ -95,7 +95,7 @@ router.post('/buyProduct', function (req, res) {
   const jsonProducts = JSON.stringify(products);
 
   sql.connect(config).then(() => {
-    return sql.query`EXEC sp_buy_product3 ${tax}, ${totalAmount}, ${cardID}, ${userID}, ${jsonProducts}`;
+    return sql.query`EXEC sp_buy_product ${tax}, ${totalAmount}, ${cardID}, ${userID}, ${jsonProducts}`;
   }).then(result => {
     console.dir(result);
   }).catch(err => {
