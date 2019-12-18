@@ -4,7 +4,7 @@ CREATE PROCEDURE sp_login (
 )
 AS
      BEGIN
-        SELECT cEmail, cPassword
+        SELECT nUserID, cEmail, cPassword
         FROM TUsers
         WHERE cEmail = @cEmail AND cPassword = @cPassword;
      END;

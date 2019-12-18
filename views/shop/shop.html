@@ -43,16 +43,50 @@
         <h1 class="jumbotron-heading">Web Shop</h1>
         <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
           etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-        <p>
+        <!-- <p>
           <a href="../shop/create-product.html" class="btn btn-primary my-2">Create product</a>
-        </p>
+        </p> -->
+      </div>
+      <div class="card-body user-overview-class" id="user-overview">
+        <p class="card-text">User Logged in</p>
+        <p class="card-text my-email"></p>
+      </div>
+
+      <div class="card-container">
+        <p>Choose a card to pay with:</p>
+        <form id="myForm">
+
+        </form>
+      </div>
+
+      <div>
+        <input type="text" id="nameInput" placeholder="Enter product..." title="Type in a name">
+        <input type="text" id="descriptionInput" placeholder="Enter description..." title="Type in a name">
+        <button id="searchBtn" class="btn btn-sm btn-primary btnblock" onclick="myFunction33()">
+          Search Product
+        </button>
       </div>
     </section>
 
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Product</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody class="basket">
+      </tbody>
+    </table>
+    <div style="text-align: center;">
+      <p class="total-price"></p>
+      <a class="btn btn-primary" style="color: white;" onclick="buy()">Buy</a>
+    </div>
+
     <div class="album py-5 bg-light">
       <div class="container">
-
-        <div class="row product-container">
+        <div class="row product-container" id="search-container">
         </div>
       </div>
     </div>
@@ -67,51 +101,196 @@
     </div>
   </footer>
   <script>
+
+    function foo(arr) {
+      var a = [], b = [], prev;
+      arr.sort();
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] !== prev) {
+          a.push(arr[i]);
+          b.push(1);
+        } else {
+          b[b.length - 1]++;
+        }
+        prev = arr[i];
+      }
+
+      return b;
+    }
+
+    function buy() {
+
+      const frecuency = foo(productIDs);
+
+      for (let i = 0; i < boughtProducts.length; i++) {
+        boughtProducts[i].nQuantity = frecuency[i];
+      }
+      const cardID = $('input[name=radioName]:checked', '#myForm').val();
+      let data = {
+        card: cardID,
+        products: boughtProducts,
+        totalAmount: totalPrice,
+        userID: currentUser.id
+      };
+      $.post("/buyProduct", { data });
+    }
+
+    let boughtProducts = [];
+
+    let currentUser = {
+      id: '',
+      email: ''
+    };
+    function getUser() {
+      $.get("getUser", function (data, status) {
+        currentUser.id = data.id;
+        currentUser.email = data.email;
+        $(".my-email").text(currentUser.email);
+      });
+    }
+
+    function getCard() {
+      $.get("getCard", function (data, status) {
+        data.forEach(card => {
+          $("#myForm").
+            append('<div class="radio">' +
+              '<label><input type="radio" value="' + card.nCardID + '" checked name="radioName"> ' + card.cCardNumber +
+              '(' + card.cCardHolder + ')</label>' +
+              '</div>');
+        })
+      });
+    }
+
+    var productList = [];
+    var productIDs = [];
+
+    let totalPrice = 0;
+
+    function add(productID) {
+      productIDs.push(productID);
+
+      const productName = productList[productID - 1].cName;
+      const productPrice = productList[productID - 1].nPrice;
+
+      totalPrice += productPrice;
+
+      boughtProducts = productList.filter(element => productIDs.includes(element.nProductID));
+
+
+      $(".total-price").text(`total price: ${totalPrice} kr.`);
+      $(".basket").
+        append('<tr>' +
+          '<td>' + productID + '</td>' +
+          '<td>' + productName + '</td>' +
+          '<td>' + productPrice + '</td>' +
+          '</tr>');
+    };
+
     $(document).ready(function () {
       doAjax();
+      getUser();
+      getCard();
     });
 
     async function doAjax(args) {
       const result = await $.get("/getProducts", function (products) {
         products.forEach(product => {
+          productList.push(product);
           $(".product-container").
             append('<div class="col-md-4"> <div class="card mb-4 box-shadow">' +
-              '<img class="card-img-top" src="https://1001freedownloads.s3.amazonaws.com/vector/thumb/63319/Placeholder.png" alt="Card image cap">' +
               '<div class="card-body">' +
               '<p class="card-text">' + product.cName + '</p>' +
               '<p class="card-text">' + product.nPrice + ' kr</p>' +
               '<p class="card-text">' + product.cDescription + '</p>' +
               '<div class="d-flex justify-content-between align-items-center">' +
               '<div class="btn-group">' +
-              '<button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>' +
-              '<button type="button" onclick="updateProduct(' + product.nProductID + ')" class="btn btn-sm btn-outline-secondary">Update</button>' +
-              '<button type="button" class="btn btn-sm btn-outline-secondary">Delete</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="add(' + product.nProductID + ')">Buy</button>' +
+              '<button type="button" id="1" class="btn btn-sm btn-outline-secondary" onclick=setRate(1)>1</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(2)>2</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(3)>3</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(4)>4</button>' +
+              '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(5)>5</button>' +
               '</div>' +
               '</div>' +
               '</div>' +
+              '<textarea class="form-control" id="' + product.nProductID + '" placeholder="Comment to rating" rows="3"></textarea>' +
+              '<a class="btn btn-primary" style="color: white;" onclick="rate(' + product.nProductID + ')">rate</a>' +
               '</div>' +
               '</div>');
         });
       })
     }
 
-    function updateProduct(productID) {
-      console.log('ID:', productID)
-      $.ajax({
-        url: '/setProduct',
-        type: 'POST',
-        data: {
-          json: JSON.stringify({
-            name: "Bob",
-            description: "descp",
-            price: "700"
-          })
-        },
-        dataType: 'json'
-      });
+    let productRating;
 
-      // window.location = 'http://localhost:3000/update-product';
+    function setRate(rating) {
+      productRating = rating;
     }
+
+    function rate(product) {
+      //rating, product-ID, user-ID, comment
+      var comment = document.getElementById(product).value;
+      console.log('comment:', comment);
+      const data = {
+        userID: currentUser.id,
+        productID: product,
+        rating: productRating,
+        comment: comment
+      }
+      $.post("/rateProduct", { data });
+      alert('You have now rated the product with a rating of: ' + productRating);
+    }
+
+    // function getUser() {
+    //   console.log(test);
+    // }
+
+    function myFunction33() {
+      console.log("document.getElementById('nameInput').innerHTML:", document.getElementById('nameInput').value)
+      if (window.confirm("Are you sure to search?"))
+        $.ajax({
+          url: "/searchProducts",
+          type: "GET",
+          data: {
+            filterName: document.getElementById('nameInput').value,
+            filterDescription: document.getElementById('descriptionInput').value
+          },
+          success: function (data) {
+            const jsonList = data.products.recordset;
+
+            var list = document.getElementById("search-container");
+            while (list.hasChildNodes()) {
+              list.removeChild(list.firstChild);
+            }
+            jsonList.forEach(product => {
+              $(".product-container").
+                append('<div class="col-md-4"> <div class="card mb-4 box-shadow">' +
+                  '<div class="card-body">' +
+                  '<p class="card-text">' + product.cName + '</p>' +
+                  '<p class="card-text">' + product.nPrice + ' kr</p>' +
+                  '<p class="card-text">' + product.cDescription + '</p>' +
+                  '<div class="d-flex justify-content-between align-items-center">' +
+                  '<div class="btn-group">' +
+                  '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="add(' + product.nProductID + ')">Buy</button>' +
+                  '<button type="button" id="1" class="btn btn-sm btn-outline-secondary" onclick=setRate(1)>1</button>' +
+                  '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(2)>2</button>' +
+                  '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(3)>3</button>' +
+                  '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(4)>4</button>' +
+                  '<button type="button" class="btn btn-sm btn-outline-secondary" onclick=setRate(5)>5</button>' +
+                  '</div>' +
+                  '</div>' +
+                  '</div>' +
+                  '<textarea class="form-control" id="' + product.nProductID + '" placeholder="Comment to rating" rows="3"></textarea>' +
+                  '<a class="btn btn-primary" style="color: white;" onclick="rate(' + product.nProductID + ')">rate</a>' +
+                  '</div>' +
+                  '</div>');
+            });
+          }
+
+        });
+
+    }
+
   </script>
 </body>
 

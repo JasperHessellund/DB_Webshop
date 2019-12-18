@@ -12,7 +12,7 @@ const config = {
 };
 
 // Sign up a user to the database
-router.post('/signup', function(req, res) {
+router.post('/signup', function (req, res) {
 
   // Taking all the fields from the form in signup.html where name=""
   let firstName = req.body.inputFirstName;
@@ -30,7 +30,7 @@ router.post('/signup', function(req, res) {
   }).then(result => {
     console.dir(result)
 
-    if (result.rowsAffected[0]===undefined) {
+    if (result.rowsAffected[0] === undefined) {
       res.redirect("/users/signup.html")
       sql.close();
     }
@@ -46,25 +46,49 @@ router.post('/signup', function(req, res) {
   })
 });
 
-router.post('/login', function(req, res, next) {
+let user = {
+  id: '',
+  email: ''
+}
+router.get('/getUser', function (req, res) {
+  res.send(user);
+});
+
+router.get('/getCard', function (req, res) {
+  console.log('bliver ramt!');
+  sql.connect(config).then(() => {
+    return sql.query`SELECT * FROM TCard WHERE nUserID = ${user.id}`;
+  }).then(result => {
+    console.log(result);
+    const card = result.recordsets[0];
+    res.send(card);
+    // sql.close();
+  }).catch(err => {
+    console.log(err);
+  })
+  sql.on('error', err => {
+    console.log(err)
+  })
+});
+
+router.post('/login', function (req, res, next) {
 
   let email = req.body.inputEmail;
   let password = req.body.inputPassword;
+
   sql.connect(config).then(() => {
     return sql.query`EXEC sp_login ${email}, ${password}; `;
-
   }).then(result => {
-    console.dir(result)
-
-    if (result.rowsAffected[0]===undefined || result.rowsAffected[0] === 0) {
-      sql.close();
-      console.log('test: 1');
-      // res.sendFile(path.join(__dirname, '../views/users', 'login.html'));
+    // console.log(result);
+    // console.log(result.recordsets[0][0].nUserID);
+    user.id = result.recordsets[0][0].nUserID;
+    user.email = result.recordsets[0][0].cEmail;
+    module.exports = { user: "My User" };
+    if (result.rowsAffected[0] === undefined || result.rowsAffected[0] === 0) {
+      // sql.close();
     }
     else {
-      sql.close()
-      console.log('test: 2');
-      // res.redirect("/shop");
+      // sql.close()
       res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
     }
   }).catch(err => {

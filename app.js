@@ -1,13 +1,16 @@
 let express = require('express');
+let app = express();
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let sassMiddleware = require('node-sass-middleware');
+// Body parser for forms
 let bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 
-let app = express();
 
 //Load views
 app.use(express.static(path.join(__dirname, '/views')));
@@ -22,9 +25,6 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redi
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
 
-// Body parser for forms
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 app.use(logger('dev'));
 app.use(express.json());

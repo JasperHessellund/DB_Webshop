@@ -37,5 +37,4 @@ CREATE TABLE audit_users (
     -- HOST_NAME: Returns the workstation name.
     cHostName NVARCHAR(128) NOT NULL DEFAULT HOST_NAME(),
     CONSTRAINT chkUserAction CHECK(cAction IN ('I','U','D'))
-
 );
