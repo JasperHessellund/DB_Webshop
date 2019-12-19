@@ -22,14 +22,14 @@ CREATE TABLE audit_users (
     --storage size is 2^31-1 bytes. The storage size is the actual length of the data entered + 2 bytes.
     --The data that is entered can be 0 bytes in length. The ANSI SQL synonym for varbinary is binary varying.
 
-    --SUSER_ID: Is the login name of the user
+    --SUSER_ID:  Is the login identification number of the user.
     nUserID VARBINARY(85) NOT NULL DEFAULT SUSER_ID(),
     -- NVARCHAR: Variable-size string data. n defines the string size in byte-pairs and can be a value from 1 through
     --4,000. max indicates that the maximum storage size is 2^30-1 characters (2 GB). The storage size is two times n
     --bytes + 2 bytes. For UCS-2 encoding, the storage size is two times n bytes + 2 bytes and the number of characters
     --that can be stored is also n.
 
-    -- SUSER_NAME: Is the login identification number of the user.
+    -- SUSER_NAME: Is the login name of the user.
     cUserName NVARCHAR(128) NOT NULL DEFAULT SUSER_NAME(),
 
     -- HOST_ID: Returns the workstation identification number of the application on the client computer that is connecting to SQL Server
