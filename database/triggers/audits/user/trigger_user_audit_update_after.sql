@@ -28,9 +28,9 @@ BEGIN
             @cNewPassword = cPassword, @nNewTotalAmount = nTotalAmount
     FROM inserted
 
-    INSERT INTO dbo.audit_user (cOldFirstName, cOldLastName, cOldAddress, cOldZipCode,
-                cOldPhoneNumber, cOldEmail, cOldPassword, cOldTotalAmount,cNewFirstName, cNewLastName, cNewAddress, cNewZipCode,
-                cNewPhoneNumber, cNewEmail, cNewPassword, cNewTotalAmount, cAction)
+    INSERT INTO dbo.audit_users (cOldFirstName, cOldLastName, cOldAddress, cOldZipCode,
+                cOldPhoneNumber, cOldEmail, cOldPassword, nOldTotalAmount,cNewFirstName, cNewLastName, cNewAddress, cNewZipCode,
+                cNewPhoneNumber, cNewEmail, cNewPassword, nNewTotalAmount, cAction)
                 --'U' stands for UPDATE
            VALUES (@cOldFirstName, @cOldLastName, @cOldAddress, @cOldZipCode, @cOldPhoneNumber,
                    @cOldEmail, @cOldPassword, @nOldTotalAmount,@cNewFirstName, @cNewLastName, @cNewAddress, @cNewZipCode, @cNewPhoneNumber,

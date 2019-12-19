@@ -16,8 +16,8 @@ BEGIN
             @cPassword = cPassword, @nTotalAmount = nTotalAmount
     FROM inserted
 
-    INSERT INTO dbo.audit_user (cNewFirstName, cNewLastName, cNewAddress, cNewZipCode,
-                cNewPhoneNumber, cNewEmail, cNewPassword, cNewTotalAmount, cAction)
+    INSERT INTO dbo.audit_users (cNewFirstName, cNewLastName, cNewAddress, cNewZipCode,
+                cNewPhoneNumber, cNewEmail, cNewPassword, nNewTotalAmount, cAction)
                 --'I' stands for INSERT
            VALUES (@cFirstName, @cLastName, @cAddress, @cZipCode, @cPhoneNumber,
                    @cEmail, @cPassword, @nTotalAmount, 'I')
