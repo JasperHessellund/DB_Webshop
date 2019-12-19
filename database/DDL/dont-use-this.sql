@@ -1,0 +1,65 @@
+CREATE TABLE TProduct (
+	nProductID INT PRIMARY KEY IDENTITY,
+	cName VARCHAR(200) NOT NULL,
+	cDescription TEXT NOT NULL,
+	nPrice INT NOT NULL,
+	nCurrentStock INT NOT NULL,
+    nAverageRating FLOAT(4) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE TCity (
+	nCityID INT PRIMARY KEY IDENTITY,
+    cCity VARCHAR(50) NOT NULL 
+);
+
+CREATE TABLE TUsers (
+	nUserID INT PRIMARY KEY IDENTITY,
+	cFirstName VARCHAR(64) NOT NULL,
+	cLastName VARCHAR(64) NOT NULL,
+	cAddress VARCHAR(255) NOT NULL,
+	cZipCode CHAR(4) NOT NULL,
+	cPhoneNumber VARCHAR(16) NOT NULL UNIQUE,
+	cEmail VARCHAR(255) NOT NULL UNIQUE,
+	cPassword VARCHAR(255) NOT NULL,
+    nTotalAmount INT NOT NULL,
+	nCityID INT FOREIGN KEY REFERENCES TCity(nCityID)
+);
+
+CREATE TABLE TCard (
+	nCardID INT PRIMARY KEY IDENTITY,
+    cCardNumber VARCHAR(22) NOT NULL UNIQUE,
+	cCardHolder VARCHAR(255) NOT NULL,
+	dExpireDate DATE NOT NULL,
+	cCCV CHAR(3),
+    nTotalAmount INT NOT NULL,
+	nUserID INT FOREIGN KEY REFERENCES TUsers(nUserID)
+);
+
+CREATE TABLE TInvoice (
+	nInvoiceID INT PRIMARY KEY IDENTITY,
+	dIssueDate DATETIME NOT NULL,
+	nTax INT NOT NULL,
+	nTotalAmount INT NOT NULL,
+	nCardID INT FOREIGN KEY REFERENCES TCard(nCardID)
+
+);
+
+CREATE TABLE TInvoiceLine (
+	nProductID INT NOT NULL,
+    nInvoiceID INT NOT NULL,
+	nQuantity INT NOT NULL,
+	nPrice INT NOT NULL,
+	CONSTRAINT PK_TInvoiceLine PRIMARY KEY (nInvoiceID, nProductID),
+    CONSTRAINT FK_TInvoiceLine_TInvoice FOREIGN KEY (nInvoiceID) REFERENCES TInvoice (nInvoiceID),
+	CONSTRAINT FK_TInvoiceLine_TProduct FOREIGN KEY (nProductID) REFERENCES TProduct (nProductID)
+);
+
+CREATE TABLE TRating (
+	nUserID INT NOT NULL,
+	nProductID INT NOT NULL,
+	nRating float(4) CHECK (nRating BETWEEN 0 AND 5),
+    cComment TEXT 
+    CONSTRAINT PK_TRating PRIMARY KEY (nUserID, nProductID),
+    CONSTRAINT FK_TRating_TUser FOREIGN KEY (nUserID) REFERENCES TUsers (nUserID),
+	CONSTRAINT FK_TRating_TProduct FOREIGN KEY (nProductID) REFERENCES TProduct (nProductID)
+);

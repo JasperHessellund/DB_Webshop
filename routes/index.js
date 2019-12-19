@@ -22,8 +22,6 @@ router.get('/shop', function (req, res) {
   res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
 });
 
-
-
 router.post('/createProduct', function (req, res) {
   const name = req.body.productName;
   const description = req.body.description;
