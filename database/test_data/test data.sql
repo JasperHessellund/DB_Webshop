@@ -93,39 +93,39 @@ INSERT INTO TUsers(cFirstName,cLastName,cAddress,cZipCode,cPhoneNumber,cEmail,cP
 -- Cards
 -- Insert credit cards TODO: Add cardholder corresponding to user firstname and lastname
 
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1122334455667788','04/20','444',157.50,1);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1133445566778899','05/20','555',0.00,1);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1144556677889900','06/20','666',0.00,1);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1155667788990011','07/20','777',107.00,2);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1166778899001122','08/20','888',79.00,3);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1177889900112233','09/20','999',26.10,4);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1188990011223344','10/20','111',27.85,4);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','1199001122334455','11/20','222',45.85,5);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2211223344556677','12/20','333',37.40,5);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2222334455667788','01/21','456',166.00,6);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2244556677889900','02/21','467',0.00,6);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2255667788990011','03/21','478',33.50,7);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2266778899001122','04/21','489',39.00,8);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2277889900112233','05/21','512',174.50,9);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2288990011223344','06/21','522',0.00,9);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','2299001122334455','07/21','533',0.00,9);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3311223344556677','08/21','544',74.50,10);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3322334455667788','09/21','556',55.70,11);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3333445566778899','10/21','567',0.00,11);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3344556677889900','11/21','578',0.00,11);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3355667788990011','12/21','580',95.50,12);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3366778899001122','01/22','590',18.00,12);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3377889900112233','02/22','610',0.00,12);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3388990011223344','03/22','620',0.00,13);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','3399001122334455','04/22','630',0.00,13);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4411223344556677','04/22','640',0.00,13);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4422334455667788','05/22','650',0.00,14);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4433445566778899','06/22','660',0.00,14);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4444556677889900','07/22','670',0.00,14);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4455667788990011','08/22','680',0.00,15);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4466778899001122','09/22','690',0.00,15);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4477889900112233','10/22','700',0.00,15);
-INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Test','4488990011223344','11/22','710',0.00,15);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Finn Olsen','1122334455667788','04-29-20','444',157.50,1);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Lars Larsen','1133445566778899','04-29-20','555',0.00,1);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Lars Findsen','1144556677889900','04-29-20','666',0.00,1);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Bogdan Thomsen','1155667788990011','04-29-20','777',107.00,2);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Hanne Larsen','1166778899001122','04-29-20','888',79.00,3);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Tim Hanne','1177889900112233','04-29-20','999',26.10,4);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Frank Arnesen','1188990011223344','04-29-20','111',27.85,4);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Lise Lotte','1199001122334455','04-29-20','222',45.85,5);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Birgitte Stougaard','2211223344556677','04-29-20','333',37.40,5);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Kristoffer Birk','2222334455667788','04-29-20','456',166.00,6);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Johanne skov','2244556677889900','04-29-20','467',0.00,6);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Fnan','2255667788990011','04-29-20','478',33.50,7);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Sussanne','2266778899001122','04-29-20','489',39.00,8);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Søren','2277889900112233','04-29-20','512',174.50,9);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Emil','2288990011223344','04-29-20','522',0.00,9);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Magnus','2299001122334455','04-29-20','533',0.00,9);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Philip','3311223344556677','04-29-20','544',74.50,10);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Kristian','3322334455667788','04-29-20','556',55.70,11);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Louise','3333445566778899','04-29-20','567',0.00,11);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Ditte','3344556677889900','04-29-20','578',0.00,11);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Mie','3355667788990011','04-29-20','580',95.50,12);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Mette','3366778899001122','04-29-20','590',18.00,12);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Fie','3377889900112233','04-29-20','610',0.00,12);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Simone','3388990011223344','04-29-20','620',0.00,13);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Simon','3399001122334455','04-29-20','630',0.00,13);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Tom Kristensen','4411223344556677','04-29-20','640',0.00,13);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Lionel Messi','4422334455667788','04-29-20','650',0.00,14);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Christiano Ronaldo','4433445566778899','04-29-20','660',0.00,14);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Robert Van Persie','4444556677889900','04-29-20','670',0.00,14);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Michael Arteta','4455667788990011','04-29-20','680',0.00,15);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Frederik Ljungberg','4466778899001122','04-29-20','690',0.00,15);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Joey Moe','4477889900112233','04-29-20','700',0.00,15);
+INSERT INTO TCard(cCardHolder,cCardNumber,dExpireDate,cCCV,nTotalAmount,nUserID) VALUES ('Niklas Thomsen','4488990011223344','04-29-20','710',0.00,15);
 
 
 -- UserID 14 -- UserID 13 -- UserID 11 -- UserID 10 -- UserID 9 -- UserID 7 -- UserID 5 -- UserID 3 -- UserID 2 -- UserID 1
@@ -336,3 +336,4 @@ INSERT INTO TInvoiceLine(nProductID,nInvoiceID,nQuantity,nPrice) VALUES (13,44,1
 INSERT INTO TInvoiceLine(nProductID,nInvoiceID,nQuantity,nPrice) VALUES (10,45,1,9.50);
 INSERT INTO TInvoiceLine(nProductID,nInvoiceID,nQuantity,nPrice) VALUES (17,45,1,18.00);
 INSERT INTO TInvoiceLine(nProductID,nInvoiceID,nQuantity,nPrice) VALUES (17,46,1,18.00);
+

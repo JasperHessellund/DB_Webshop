@@ -22,8 +22,6 @@ router.get('/shop', function (req, res) {
   res.sendFile(path.join(__dirname, '../views/shop', 'shop.html'));
 });
 
-
-
 router.post('/createProduct', function (req, res) {
   const name = req.body.productName;
   const description = req.body.description;
@@ -95,7 +93,7 @@ router.post('/buyProduct', function (req, res) {
   const jsonProducts = JSON.stringify(products);
 
   sql.connect(config).then(() => {
-    return sql.query`EXEC sp_buy_product3 ${tax}, ${totalAmount}, ${cardID}, ${userID}, ${jsonProducts}`;
+    return sql.query`EXEC sp_buy_product ${tax}, ${totalAmount}, ${cardID}, ${userID}, ${jsonProducts}`;
   }).then(result => {
     console.dir(result);
   }).catch(err => {
